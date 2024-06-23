@@ -2,6 +2,7 @@ package com.partha.springboot.service.impl;
 
 import com.partha.springboot.dto.DepartmentDto;
 import com.partha.springboot.entity.Department;
+import com.partha.springboot.exception.ResourceNotFoundException;
 import com.partha.springboot.mapper.DepartmentMapper;
 import com.partha.springboot.repository.DepartmentRepository;
 import com.partha.springboot.service.DepartmentService;
@@ -38,7 +39,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDto getDepartmentByDepartmentCode(String departmentCode) {
-        Department department = departmentRepository.findByDepartmentCode(departmentCode);
+        Department department = departmentRepository.findByDepartmentCode(departmentCode).orElseThrow(
+                () -> new ResourceNotFoundException("Department doesn't exit with code : " + departmentCode)
+        );
 
         //DepartmentDto departmentDto = new DepartmentDto(department.getId(), department.getDepartmentName(),
         //        department.getDepartmentDescription(), department.getDepartmentCode());
